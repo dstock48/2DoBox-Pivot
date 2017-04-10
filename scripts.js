@@ -4,9 +4,6 @@ var cardArray = [];
 
 fromStorage();
 
-$('.submit-btn').on('click', function(){
-  addCard();
-});
 
 function addCard() {
   var title = $('.title-input').val();
@@ -46,32 +43,23 @@ function fromStorage() {
   prependCards(parsedCardList);
 }}
 
-
 function prependCards(array) {
   var cardContainer = $('.card-container');
   cardContainer.html('');
   array.forEach(function(card){
   cardContainer.prepend(
-      `<article class="card" id=${card.uniqueID}>
-        <div class="text">
-          <h3 class="card-title" contenteditable="true">${card.title}</h3>
-          <button class="delete-btn card-btns"></button>
-          <p class="card-body" contenteditable="true">${card.body}</p>
-        </div>
-        <button class="up-vote card-btns"></button>
-        <button class="down-vote card-btns"></button>
-        <h5>quality: <span class="quality">${card.quality}</h5></span>
-      </article>`
-  )})}
-
-// Delete buttons
-
-$('.card-container').on('click', '.delete-btn', function() {
-  var uniqueCardIdtoParse = $(this).closest('article').attr('id');
-  var uniqueCardId = parseInt(uniqueCardIdtoParse)
-  $(this).closest('article').remove();
-  deleteCardLocal(uniqueCardId);
-})
+    `<article class="card" id=${card.uniqueID}>
+      <div class="text">
+        <h3 class="card-title" contenteditable="true">${card.title}</h3>
+        <button class="delete-btn card-btns"></button>
+        <p class="card-body" contenteditable="true">${card.body}</p>
+      </div>
+      <button class="up-vote card-btns"></button>
+      <button class="down-vote card-btns"></button>
+      <h5>quality: <span class="quality">${card.quality}</h5></span>
+    </article>`
+  )}
+)}
 
 function deleteCardLocal(uniqueCardId) {
   var cardID = uniqueCardId
@@ -83,17 +71,27 @@ function deleteCardLocal(uniqueCardId) {
   })
 }
 
-$('.search-input').on('keyup', function() {
-    var searchInput = $(this).val().toLowerCase();
-    $('.text').each(function() {
-      var cardText = $(this).text().toLowerCase();
-      if (cardText.indexOf(searchInput) != -1) {
-        $(this).parent().show();
-      } else {
-        $(this).parent().hide();
-      }
-    })
+$('.submit-btn').on('click', function(){
+  addCard();
+});
 
+$('.card-container').on('click', '.delete-btn', function() {
+  var uniqueCardIdtoParse = $(this).closest('article').attr('id');
+  var uniqueCardId = parseInt(uniqueCardIdtoParse)
+  $(this).closest('article').remove();
+  deleteCardLocal(uniqueCardId);
+})
+
+$('.search-input').on('keyup', function() {
+  var searchInput = $(this).val().toLowerCase();
+  $('.text').each(function() {
+    var cardText = $(this).text().toLowerCase();
+    if (cardText.indexOf(searchInput) != -1) {
+      $(this).parent().show();
+    } else {
+      $(this).parent().hide();
+    }
+  })
 })
 
 $('input').on('keyup', function(event){
