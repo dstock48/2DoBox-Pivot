@@ -1,24 +1,22 @@
 var uniqueID;
 var cardArray = [];
 
-
 fromStorage();
-
 
 function addCard() {
   var title = $('.title-input').val();
   var body = $('.body-input').val();
   var uniqueID = Date.now();
   var card = new Card(title, body, uniqueID);
-  $('.title-input').val("");
-  $('.body-input').val("");
+  $('.title-input').val('');
+  $('.body-input').val('');
 }
 
 function Card(title, body, uniqueID) {
   this.title = title;
   this.body = body;
   this.uniqueID = uniqueID;
-  this.qualityArray = ['swill', 'plausible', 'genius']
+  this.qualityArray = ['swill', 'plausible', 'genius'];
   this.quality = this.qualityArray[0];
   cardArray.push(this);
   qualityCount = 0;
@@ -31,17 +29,18 @@ function stringifyArray() {
 }
 
 function toStorage(array) {
-  var tempStore = localStorage.setItem( "cardlist",array);
+  var tempStore = localStorage.setItem('cardlist', array);
   fromStorage();
 }
 
 function fromStorage() {
-  var storageList = localStorage.getItem("cardlist");
+  var storageList = localStorage.getItem('cardlist');
   var parsedCardList = JSON.parse(storageList);
   if (localStorage.length > 0) {
-  cardArray = parsedCardList;
-  prependCards(parsedCardList);
-}}
+    cardArray = parsedCardList;
+    prependCards(parsedCardList);
+  }
+}
 
 function prependCards(array) {
   var cardContainer = $('.card-container');
@@ -62,12 +61,12 @@ function prependCards(array) {
 )}
 
 function deleteCardLocal(uniqueCardId) {
-  var cardID = uniqueCardId
+  var cardID = uniqueCardId;
   cardArray.forEach(function(card, index) {
     if(cardID == card.uniqueID) {
       cardArray.splice(index, 1)
     }
-    localStorage.setItem('cardlist', JSON.stringify(cardArray) )
+    localStorage.setItem('cardlist', JSON.stringify(cardArray));
   })
 }
 
@@ -77,7 +76,7 @@ $('.submit-btn').on('click', function(){
 
 $('.card-container').on('click', '.delete-btn', function() {
   var uniqueCardIdtoParse = $(this).closest('article').attr('id');
-  var uniqueCardId = parseInt(uniqueCardIdtoParse)
+  var uniqueCardId = parseInt(uniqueCardIdtoParse);
   $(this).closest('article').remove();
   deleteCardLocal(uniqueCardId);
 })
@@ -119,30 +118,30 @@ $('input').on('keyup', function(event){
 // })
 
 $('.card').on('focusout', function() {
-  var titleText = $(this).find('h3').text()
-  var cardIdString = $(this).attr('id')
-  var cardId = parseInt(cardIdString)
-  var storageList = localStorage.getItem("cardlist");
+  var titleText = $(this).find('h3').text();
+  var cardIdString = $(this).attr('id');
+  var cardId = parseInt(cardIdString);
+  var storageList = localStorage.getItem('cardlist');
   var parsedCardList = JSON.parse(storageList);
-  $(parsedCardList)
+  $(parsedCardList);
   cardArray.forEach(function(card, index) {
     if (cardId == card.uniqueID) {
       card.title = titleText;
     }
-    localStorage.setItem('cardlist', JSON.stringify(cardArray) )
+    localStorage.setItem('cardlist', JSON.stringify(cardArray))
   })
 });
 
 $('.card').on('focusout', function() {
-  var bodyText = $(this).find('p').text()
-  var cardIdString = $(this).attr('id')
-  var cardId = parseInt(cardIdString)
-  var storageList =localStorage.getItem("cardlist");
+  var bodyText = $(this).find('p').text();
+  var cardIdString = $(this).attr('id');
+  var cardId = parseInt(cardIdString);
+  var storageList = localStorage.getItem('cardlist');
   var parsedCardList = JSON.parse(storageList);
   cardArray.forEach(function(card, index) {
     if (cardId == card.uniqueID) {
       card.body = bodyText;
     }
-    localStorage.setItem('cardlist', JSON.stringify(cardArray) )
+    localStorage.setItem('cardlist', JSON.stringify(cardArray))
   })
 })
