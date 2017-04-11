@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <title>2DoBox</title>
     <link rel="stylesheet" href="normalize.css" type="text/css">
@@ -10,11 +11,12 @@
   <body>
     <header>
       <div class="input-container">
-        <h1 role="banner">2Do<span>Box</span></h1>
+        <h1 role="banner">2<span>Do</span>Box</h1>
         <label for="title"></label>
         <input class="title-input" id="title" type="text" placeholder="Title">
         <label for="body"></label>
-        <input class="body-input" id="body" type="text" placeholder="Body">
+        <!-- <input class="body-input" id="body" type="text" placeholder="Body"> -->
+        <textarea class="body-input" id="body" type="text" placeholder="body"></textarea>
         <button class="submit-btn">Save</button>
       </div>
     </header>
@@ -29,3 +31,18 @@
     <script type="text/javascript" src="scripts.js"></script>
   </body>
 </html>
+
+
+
+<!-- `<article class="card" id=${card.uniqueID}>
+  <div class="card-header">
+    <h3 class="card-title" contenteditable="true">${card.title}</h3>
+    <button class="delete-btn card-btns"></button>
+  </div>
+  <p class="card-body" contenteditable="true">${card.body}</p>
+  <div class="card-footer">
+    <button class="up-vote card-btns"></button>
+    <button class="down-vote card-btns"></button>
+    <h5>quality: <span class="quality">${card.quality}</h5></span>
+  </div>
+</article>` -->
