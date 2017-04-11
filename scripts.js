@@ -8,6 +8,10 @@ function addCard() {
   var body = $('.body-input').val();
   var uniqueID = Date.now();
   var card = new Card(title, body, uniqueID);
+  clearInputs();
+}
+
+function clearInputs() {
   $('.title-input').val('');
   $('.body-input').val('');
 }
@@ -17,7 +21,7 @@ function Card(title, body, uniqueID) {
   this.body = body;
   this.uniqueID = uniqueID;
   this.qualityArray = ['swill', 'plausible', 'genius'];
-  this.quality = this.qualityArray[0];
+  this.quality = this.qualityArray[0]; // TODO: change index 0 to qualityCount
   cardArray.push(this);
   qualityCount = 0;
   stringifyArray();
@@ -63,7 +67,7 @@ function deleteCard() {
   $(this).closest('article').remove();
   cardArray.forEach(function(card, index) {
     if (cardID == card.uniqueID) {
-      cardArray.splice(index, 1)
+      cardArray.splice(index, 1);
     }
     localStorage.setItem('cardlist', JSON.stringify(cardArray));
   })
