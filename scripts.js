@@ -48,11 +48,9 @@ function prependCards(array) {
   array.forEach(function(card){
   cardContainer.prepend(
     `<article class="card" id=${card.uniqueID}>
-      <div class="text">
-        <h3 class="card-title" contenteditable="true">${card.title}</h3>
-        <button class="delete-btn card-btns"></button>
-        <p class="card-body" contenteditable="true">${card.body}</p>
-      </div>
+      <h3 class="card-title" contenteditable="true">${card.title}</h3>
+      <button class="delete-btn card-btns"></button>
+      <p class="card-body" contenteditable="true">${card.body}</p>
       <button class="up-vote card-btns"></button>
       <button class="down-vote card-btns"></button>
       <h5>quality: <span class="quality">${card.quality}</h5></span>
@@ -60,30 +58,20 @@ function prependCards(array) {
   )}
 )}
 
-function deleteCardLocal(uniqueCardId) {
-  var cardID = uniqueCardId;
+function deleteCard() {
+  var cardID = parseInt($(this).closest('article').attr('id'));
+  $(this).closest('article').remove();
   cardArray.forEach(function(card, index) {
-    if(cardID == card.uniqueID) {
+    if (cardID == card.uniqueID) {
       cardArray.splice(index, 1)
     }
     localStorage.setItem('cardlist', JSON.stringify(cardArray));
   })
 }
 
-$('.submit-btn').on('click', function(){
-  addCard();
-});
-
-$('.card-container').on('click', '.delete-btn', function() {
-  var uniqueCardIdtoParse = $(this).closest('article').attr('id');
-  var uniqueCardId = parseInt(uniqueCardIdtoParse);
-  $(this).closest('article').remove();
-  deleteCardLocal(uniqueCardId);
-})
-
-$('.search-input').on('keyup', function() {
+function filterMatches() {
   var searchInput = $(this).val().toLowerCase();
-  $('.text').each(function() {
+  $('.card').each(function() {
     var cardText = $(this).text().toLowerCase();
     if (cardText.indexOf(searchInput) != -1) {
       $(this).parent().show();
@@ -91,13 +79,40 @@ $('.search-input').on('keyup', function() {
       $(this).parent().hide();
     }
   })
-})
+}
 
-$('input').on('keyup', function(event){
+function enterSubmit(event) {
   if (event.keyCode === 13) {
     $('.submit-btn').click();
   }
-})
+}
+
+function editCardText(event) {
+  var cardTitle = $(this).find('h3').text();
+  var cardBody = $(this).find('p').text();
+  var cardIdString = $(this).attr('id');
+  var cardId = parseInt(cardIdString);
+  var storageList = localStorage.getItem('cardlist');
+  var parsedCardList = JSON.parse(storageList);
+  cardArray.forEach(function(card) {
+    if (cardId == card.uniqueID && event.target.className == 'card-body') {
+      card.body = cardBody;
+    } else if (cardId == card.uniqueID && event.target.className == 'card-title') {
+      card.title = cardTitle;
+    }
+    localStorage.setItem('cardlist', JSON.stringify(cardArray))
+  })
+}
+
+$('.submit-btn').on('click', addCard);
+
+$('.card-container').on('click', '.delete-btn', deleteCard)
+
+$('.search-input').on('input', filterMatches)
+
+$('input').on('keyup', enterSubmit)
+
+$('.card-container').on('focusout', '.card', editCardText);
 
 // Upvote WIP
 
@@ -116,32 +131,3 @@ $('input').on('keyup', function(event){
 //     }
 //   }
 // })
-
-$('.card').on('focusout', function() {
-  var titleText = $(this).find('h3').text();
-  var cardIdString = $(this).attr('id');
-  var cardId = parseInt(cardIdString);
-  var storageList = localStorage.getItem('cardlist');
-  var parsedCardList = JSON.parse(storageList);
-  $(parsedCardList);
-  cardArray.forEach(function(card, index) {
-    if (cardId == card.uniqueID) {
-      card.title = titleText;
-    }
-    localStorage.setItem('cardlist', JSON.stringify(cardArray))
-  })
-});
-
-$('.card').on('focusout', function() {
-  var bodyText = $(this).find('p').text();
-  var cardIdString = $(this).attr('id');
-  var cardId = parseInt(cardIdString);
-  var storageList = localStorage.getItem('cardlist');
-  var parsedCardList = JSON.parse(storageList);
-  cardArray.forEach(function(card, index) {
-    if (cardId == card.uniqueID) {
-      card.body = bodyText;
-    }
-    localStorage.setItem('cardlist', JSON.stringify(cardArray))
-  })
-})
