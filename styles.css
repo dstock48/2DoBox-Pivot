@@ -92,6 +92,13 @@ button:hover {
   background-color: #045E55;
 }
 
+.submit-btn[disabled] {
+  background-color: #27dbc9;
+}
+.submit-btn[disabled]:hover {
+  cursor: not-allowed;
+}
+
 /*Card*/
 
 h3 {

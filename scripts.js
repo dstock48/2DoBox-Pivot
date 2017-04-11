@@ -10,9 +10,12 @@ function addCard() {
   var uniqueID = Date.now();
   var card = new Card(title, body, uniqueID);
   var cardArray = createCardArray();
-  clearInputs();
   cardArray.push(card);
   stringifyArray(cardArray);
+  clearInputs();
+  disableSave();
+  // $('.submit-btn').attr('disabled', true);
+  // console.log($('.submit-btn').attr('disabled'));
 }
 
 function clearInputs() {
@@ -94,9 +97,34 @@ function filterMatches() {
 }
 
 function enterSubmit(event) {
-  if (event.keyCode === 13) {
-    $('.submit-btn').click();
+  disableSave();
+  var userTitle = $('.title-input').val();
+  var userBody = $('.body-input').val();
+  if (event.keyCode === 13 && userTitle !== '' && userBody !== '') {
+    // event.preventDefault();
+    addCard();
+  } else if (event.keyCode === 13) {
+    return false;
   }
+}
+
+function disableSave() {
+  // console.log('checking input');
+  var userTitle = $('.title-input').val();
+  var userBody = $('.body-input').val();
+  // console.log($('.submit-btn').prop('disabled'));
+
+  if (userTitle !== '' && userBody !== '') {
+    $('.submit-btn').prop('disabled', false)
+  } else {
+    $('.submit-btn').prop('disabled', true)
+  }
+
+  // if (userTitle.val() === ('') && userBody.val() === ('')) {
+  //   $('.submit-btn').prop('disabled', true)
+  // } else {
+  //   $('.submit-btn').prop('disabled', false)
+  // }
 }
 
 function editCardText(event) {
@@ -123,7 +151,7 @@ $('.card-container').on('click', '.delete-btn', deleteCard)
 
 $('.search-input').on('input', filterMatches)
 
-$('.title-input, textarea').on('keyup', enterSubmit)
+$('input, textarea').on('keydown', enterSubmit)
 
 $('.card-container').on('focusout', '.card', editCardText);
 
