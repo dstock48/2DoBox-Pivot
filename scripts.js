@@ -59,12 +59,16 @@ function prependCards(array) {
   array.forEach(function(card){
   cardContainer.prepend(
     `<article class="card" id=${card.uniqueID}>
-      <h3 class="card-title" contenteditable="true">${card.title}</h3>
-      <button class="delete-btn card-btns"></button>
+      <div class="card-header">
+        <h3 class="card-title" contenteditable="true">${card.title}</h3>
+        <button class="delete-btn card-btns"></button>
+      </div>
       <p class="card-body" contenteditable="true">${card.body}</p>
-      <button class="up-vote card-btns"></button>
-      <button class="down-vote card-btns"></button>
-      <h5>quality: <span class="quality">${card.quality}</h5></span>
+      <div class="card-footer">
+        <button class="up-vote card-btns"></button>
+        <button class="down-vote card-btns"></button>
+        <h5>quality: <span class="quality">${card.quality}</h5></span>
+      </div>
     </article>`
   )}
 )}
