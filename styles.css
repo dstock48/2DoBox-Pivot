@@ -27,6 +27,7 @@ h1 {
   color: #00A79D;
   font-family: 'Roboto Slab', serif;
   font-size: 82px;
+  transition: all 200ms;
 }
 
 main {
