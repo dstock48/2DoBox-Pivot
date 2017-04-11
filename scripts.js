@@ -1,7 +1,7 @@
 var uniqueID;
 var cardArray = [];
 
-fromStorage();
+getFromStorage();
 
 function addCard() {
   var title = $('.title-input').val();
@@ -25,15 +25,15 @@ function Card(title, body, uniqueID) {
 
 function stringifyArray() {
   cardArrayStringify = JSON.stringify(cardArray);
-  toStorage(cardArrayStringify);
+  sendToStorage(cardArrayStringify);
 }
 
-function toStorage(array) {
+function sendToStorage(array) {
   var tempStore = localStorage.setItem('cardlist', array);
-  fromStorage();
+  getFromStorage();
 }
 
-function fromStorage() {
+function getFromStorage() {
   var storageList = localStorage.getItem('cardlist');
   var parsedCardList = JSON.parse(storageList);
   if (localStorage.length > 0) {
