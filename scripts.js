@@ -123,7 +123,7 @@ $('.card-container').on('click', '.delete-btn', deleteCard)
 
 $('.search-input').on('input', filterMatches)
 
-$('input').on('keyup', enterSubmit)
+$('.title-input, textarea').on('keyup', enterSubmit)
 
 $('.card-container').on('focusout', '.card', editCardText);
 
