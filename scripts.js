@@ -1,9 +1,7 @@
-// var cardArray = [];
-
 getFromStorage();
 
 function createCardArray() {
-  var cardArray = localStorage.getItem('cardlist') || '[]'
+  return JSON.parse(localStorage.getItem('cardlist')) || [];
 }
 
 function addCard() {
@@ -11,11 +9,10 @@ function addCard() {
   var body = $('.body-input').val();
   var uniqueID = Date.now();
   var card = new Card(title, body, uniqueID);
-  createCardArray();
+  var cardArray = createCardArray();
   clearInputs();
   cardArray.push(card);
-  stringifyArray();
-
+  stringifyArray(cardArray);
 }
 
 function clearInputs() {
@@ -32,9 +29,8 @@ function Card(title, body, uniqueID) {
   this.qualityCount = 0;
 }
 
-function stringifyArray() {
-  createCardArray();
-  cardArrayStringify = JSON.stringify(cardArray);
+function stringifyArray(array) {
+  cardArrayStringify = JSON.stringify(array);
   sendToStorage(cardArrayStringify);
 }
 
@@ -46,7 +42,7 @@ function sendToStorage(array) {
 function getFromStorage() {
   var storageList = localStorage.getItem('cardlist');
   var parsedCardList = JSON.parse(storageList);
-  createCardArray();
+  var cardArray = createCardArray();
   if (localStorage.length > 0) {
     cardArray = parsedCardList;
     prependCards(parsedCardList);
@@ -74,7 +70,7 @@ function prependCards(array) {
 )}
 
 function deleteCard() {
-  createCardArray();
+  var cardArray = createCardArray();
   var cardID = parseInt($(this).closest('article').attr('id'));
   $(this).closest('article').remove();
   cardArray.forEach(function(card, index) {
@@ -110,7 +106,7 @@ function editCardText(event) {
   var cardId = parseInt(cardIdString);
   var storageList = localStorage.getItem('cardlist');
   var parsedCardList = JSON.parse(storageList);
-  createCardArray();
+  var cardArray = createCardArray();
   cardArray.forEach(function(card) {
     if (cardId == card.uniqueID && event.target.className == 'card-body') {
       card.body = cardBody;
