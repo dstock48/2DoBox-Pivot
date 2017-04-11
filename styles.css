@@ -6,43 +6,42 @@
 }
 
 body {
+  width: 100%;
+  height: 100%;
   color: #6d6E71;
   font-family: 'Open Sans', sans-serif;
-  height: 100%;
-  width: 100%;
 }
 
 header {
-  background-color: #E5F3F2;
   height: 38vh;
   padding-top: 20px;
+  background-color: #E5F3F2;
   text-align: center;
 }
 
 h1 {
+  margin: 0px 0px 30px 0px;
   color: #00A79D;
   font-family: 'Roboto Slab', serif;
   font-size: 45px;
-  margin: 0px 0px 30px 0px;
 }
 
 input {
-  color: #6d6E71;
   display: block;
-  font-size: 20px;
+  width: 100%;
   height: 30px;
   margin-bottom: 20px;
-  width: 100%;
+  color: #6d6E71;
+  font-size: 20px;
 }
 
 button {
-  background-color: #00A79D;
+  width: 100%;
+  height: 30px;
   border: none;
+  background-color: #00A79D;
   color: #FFF;
   font-size: 16px;
-  height: 30px;
-  margin: 0px;
-  width: 100%;
 }
 
 button:hover {
@@ -56,16 +55,16 @@ button:hover {
 }
 
 .search-input {
-  margin: 30px auto;
   width: 50vw;
+  margin: 30px auto;
 }
 
 /*Card*/
 
 h3 {
   display: inline-block;
-  font-family: 'Roboto Slab', serif;
   margin: 10px 0px;
+  font-family: 'Roboto Slab', serif;
 }
 
 h5 {
@@ -81,24 +80,24 @@ span {
   color: #6D6E71;
 }
 
-.idea-card {
-  border-bottom: 2px solid #D1D3D4;
+.card {
   width: 100%;
+  border-bottom: 2px solid #D1D3D4;
 }
 
 .card-btns {
+  display: inline-block;
+  width: 25px;
+  height: 25px;
   background-color: inherit;
   background-repeat: no-repeat;
   background-size: cover;
-  display: inline-block;
-  height: 25px;
-  width: 25px;
 }
 
 .delete-btn {
-  background-image: url("Assets/delete.svg");
   float: right;
   margin-top: 10px;
+  background-image: url("Assets/delete.svg");
 }
 
 .delete-btn:hover {
@@ -107,8 +106,8 @@ span {
 }
 
 .up-vote {
-  background-image: url("Assets/upvote.svg");
   margin-right: 15px;
+  background-image: url("Assets/upvote.svg");
 }
 
 .up-vote:hover {
@@ -116,8 +115,8 @@ span {
 }
 
 .down-vote {
-  background-image: url("Assets/downvote.svg");
   margin-right: 15px;
+  background-image: url("Assets/downvote.svg");
 }
 
 .down-vote:hover {
@@ -146,5 +145,4 @@ span {
   .input-container {
     width: 70vw;
   }
-
 }
