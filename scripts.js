@@ -158,26 +158,41 @@ $('main').on('click', '.show-complete-btn', toggleCompleted);
 
 $('main').on('click', '.show-all-btn', showAllTasks);
 
+$('.button-container').on('click', '.none, .low, .normal, .high, .critical', filterImportance)
+
+$('.button-container').on('click', '.all', filterAll)
+
+function filterAll() {
+  prependCards(pendingTasks());
+}
+
+function filterImportance() {
+  var filterName = $(this).text().toLowerCase();
+  $('.card').each(function() {
+    var cardText = $(this).text().toLowerCase();
+    if (cardText.indexOf(filterName) != -1) {
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+  })
+}
+
 function showAllTasks() {
   $('.show-all-btn').hide();
   $('article').show();
 }
 
-
 function completeTask() {
   var cardArray = getFromStorage();
   var cardID = parseInt($(this).closest('article').attr('id'));
   $(this).closest('.card').toggleClass('completed');
-
-
   cardArray.forEach(function(card, index) {
     if (cardID == card.uniqueID) {
       card.complete = !card.complete;
     }
     localStorage.setItem('cardlist', JSON.stringify(cardArray));
   })
-
-
 }
 
 function toggleCompleted() {
