@@ -139,13 +139,12 @@ span {
 
 .card-header {
   display: flex;
-  justify-content: space-between;
   margin-bottom: 10px;
 }
 
 .card-title,
 .card-body {
-  width: 90%;
+  width: 75%;
   padding: 5px 5px 5px 0;
   border: 2px solid transparent;
   border-radius: 5px;
@@ -178,24 +177,34 @@ span {
   display: flex;
   max-width: 700px;
   margin: 20px auto;
+  justify-content: center;
 }
 
 .button-container button {
+  margin-left: 5px;
+  margin-right: 5px;
   background: #fff;
   color: black;
   border: 1px solid black;
   font-size: 13px;
   border: 2px solid #00A79D;
-  border-radius: 20px;
+  border-radius: 30px;
   color: #00A79D;
+  height: auto;
+  padding: 5px;
 }
 
-.button-container button:not(:last-child) {
-  margin-right: 10px;
+.button-container .all {
+  margin-left: 0;
+}
+
+.button-container .show-complete-btn {
+  margin-right: 0;
 }
 
 .filter-btn {
   width: 375px;
+  min-width: 65px;
 }
 .filter-btn:hover {
   background-color: #00A79D;
@@ -228,8 +237,11 @@ span {
 }
 
 .delete-btn {
+  display: inline-block;
+  margin-left: auto;
   float: right;
   background-image: url("Assets/delete.svg");
+  background-color: transparent;
 }
 
 .delete-btn:hover {
@@ -238,7 +250,10 @@ span {
 }
 
 .complete-btn {
+  display: inline-block;
   background-image: url("Assets/check.svg");
+  background-color: transparent;
+  margin-left: 10px;
 }
 
 .complete-btn:hover {
@@ -273,6 +288,7 @@ span {
   color: inherit;
 }
 
+/*Under 420px*/
 @media (max-width: 420px) {
   h1 {
     font-size: 40px;
@@ -280,5 +296,37 @@ span {
 
   textarea {
     height: 83px;
+  }
+
+
+}
+
+/*Under 700px*/
+@media (max-width: 700px) {
+  .button-container {
+    flex-wrap: wrap;
+  }
+
+  .filter-btn {
+    margin: 8px 1%;
+    width: 23%;
+    margin-bottom: 8px;
+  }
+
+  .button-container button {
+    height: 40px;
+    margin: 5px 1%;
+  }
+
+  .button-container .normal {
+    margin-right: 0;
+  }
+
+  .button-container .high {
+    margin-left: 0;
+  }
+
+  .show-complete-btn {
+    width: 48%;
   }
 }
