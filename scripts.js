@@ -1,15 +1,51 @@
 prependCards(pendingTasks());
 
-function getFromStorage() {
-  return JSON.parse(localStorage.getItem('cardlist')) || [];
-}
+$('.submit-btn').on('click', addCard);
 
-function Card(title, body, uniqueID) {  // <-- CONSTRUCTOR FUNCTION
+$('.card-container').on('click', '.delete-btn', deleteCard);
+
+$('.search-input').on('input', filterMatches);
+
+$('input, textarea').on('keydown', enterSubmit);
+
+$('.card-container').on('focusout', '.card', editCardText);
+
+$('.card-container').on('click', '.up-vote', changeImportance);
+
+$('.card-container').on('click', '.down-vote', changeImportance);
+
+$('.card-container').on('click', '.complete-btn', completeTask);
+
+$('main').on('click', '.show-complete-btn', toggleCompleted);
+
+$('main').on('click', '.show-all-btn', showAllTasks);
+
+$('.button-container').on('click', '.none, .low, .normal, .high, .critical', filterImportance);
+
+$('.button-container').on('click', '.all', filterAll);
+
+$('.input-container').on('input', '.title-input, .body-input', updateCharacterCount)
+
+function Card(title, body, uniqueID) {
   this.title = title;
   this.body = body;
   this.uniqueID = uniqueID;
   this.importance = 'Normal';
   this.complete = false;
+}
+
+function getFromStorage() {
+  return JSON.parse(localStorage.getItem('cardlist')) || [];
+}
+
+function stringifyArray(array) {
+  cardArrayStringify = JSON.stringify(array);
+  sendToStorage(cardArrayStringify);
+}
+
+function sendToStorage(array) {
+  var tempStore = localStorage.setItem('cardlist', array);
+  getFromStorage();
 }
 
 function addCard() {
@@ -28,24 +64,35 @@ function addCard() {
   $('.title-input').focus();
 }
 
+function enterSubmit(event) {
+  disableSave();
+  var userTitle = $('.title-input').val();
+  var userBody = $('.body-input').val();
+  if (event.keyCode === 13 && userTitle !== '' && userBody !== '') {
+    addCard();
+  } else if (event.keyCode === 13) {
+    return false;
+  }
+}
+
 function clearInputs() {
   $('.title-input').val('');
   $('.body-input').val('');
 }
 
-function stringifyArray(array) {
-  cardArrayStringify = JSON.stringify(array);
-  sendToStorage(cardArrayStringify);
-}
-
-function sendToStorage(array) {
-  var tempStore = localStorage.setItem('cardlist', array);
-  getFromStorage();
-}
-
 function clearCardContainer() {
   var cardContainer = $('.card-container');
   cardContainer.html('');
+}
+
+function disableSave() {
+  var userTitle = $('.title-input').val();
+  var userBody = $('.body-input').val();
+  if (userTitle !== '' && userBody !== '') {
+    $('.submit-btn').prop('disabled', false);
+  } else {
+    $('.submit-btn').prop('disabled', true);
+  }
 }
 
 function prependCards(array) {
@@ -69,8 +116,20 @@ function prependCards(array) {
       </div>
     </article>`
   )}
-)
-$('article:visible').slice(10).hide();
+  )
+  $('article:visible').slice(10).hide();
+}
+
+function completeTask() {
+  var cardArray = getFromStorage();
+  var cardID = parseInt($(this).closest('article').attr('id'));
+  $(this).closest('.card').toggleClass('completed');
+  cardArray.forEach(function(card, index) {
+    if (cardID == card.uniqueID) {
+      card.complete = !card.complete;
+    }
+    localStorage.setItem('cardlist', JSON.stringify(cardArray));
+  })
 }
 
 function deleteCard() {
@@ -83,41 +142,6 @@ function deleteCard() {
     }
     localStorage.setItem('cardlist', JSON.stringify(cardArray));
   })
-  // clearCardContainer();
-  // prependCards(pendingTasks());
-}
-
-function filterMatches() {
-  var searchInput = $(this).val().toLowerCase();
-  $('.card').each(function() {
-    var cardText = $(this).text().toLowerCase();
-    if (cardText.indexOf(searchInput) != -1) {
-      $(this).show();
-    } else {
-      $(this).hide();
-    }
-  })
-}
-
-function enterSubmit(event) {
-  disableSave();
-  var userTitle = $('.title-input').val();
-  var userBody = $('.body-input').val();
-  if (event.keyCode === 13 && userTitle !== '' && userBody !== '') {
-    addCard();
-  } else if (event.keyCode === 13) {
-    return false;
-  }
-}
-
-function disableSave() {
-  var userTitle = $('.title-input').val();
-  var userBody = $('.body-input').val();
-  if (userTitle !== '' && userBody !== '') {
-    $('.submit-btn').prop('disabled', false)
-  } else {
-    $('.submit-btn').prop('disabled', true)
-  }
 }
 
 function editCardText(event) {
@@ -134,36 +158,20 @@ function editCardText(event) {
     } else if (cardId == card.uniqueID && event.target.className == 'card-title') {
       card.title = cardTitle;
     }
-    localStorage.setItem('cardlist', JSON.stringify(cardArray))
+    localStorage.setItem('cardlist', JSON.stringify(cardArray));
   })
 }
 
-$('.submit-btn').on('click', addCard);
-
-$('.card-container').on('click', '.delete-btn', deleteCard)
-
-$('.search-input').on('input', filterMatches)
-
-$('input, textarea').on('keydown', enterSubmit)
-
-$('.card-container').on('focusout', '.card', editCardText);
-
-$('.card-container').on('click', '.up-vote', changeImportance);
-
-$('.card-container').on('click', '.down-vote', changeImportance);
-
-$('.card-container').on('click', '.complete-btn', completeTask);
-
-$('main').on('click', '.show-complete-btn', toggleCompleted);
-
-$('main').on('click', '.show-all-btn', showAllTasks);
-
-$('.button-container').on('click', '.none, .low, .normal, .high, .critical', filterImportance)
-
-$('.button-container').on('click', '.all', filterAll)
-
-function filterAll() {
-  prependCards(pendingTasks());
+function filterMatches() {
+  var searchInput = $(this).val().toLowerCase();
+  $('.card').each(function() {
+    var cardText = $(this).text().toLowerCase();
+    if (cardText.indexOf(searchInput) != -1) {
+      $(this).show();
+    } else {
+      $(this).hide();
+    }
+  })
 }
 
 function filterImportance() {
@@ -178,21 +186,13 @@ function filterImportance() {
   })
 }
 
+function filterAll() {
+  prependCards(pendingTasks());
+}
+
 function showAllTasks() {
   $('.show-all-btn').hide();
   $('article').show();
-}
-
-function completeTask() {
-  var cardArray = getFromStorage();
-  var cardID = parseInt($(this).closest('article').attr('id'));
-  $(this).closest('.card').toggleClass('completed');
-  cardArray.forEach(function(card, index) {
-    if (cardID == card.uniqueID) {
-      card.complete = !card.complete;
-    }
-    localStorage.setItem('cardlist', JSON.stringify(cardArray));
-  })
 }
 
 function toggleCompleted() {
@@ -210,14 +210,13 @@ function toggleCompleted() {
       prependCards(pendingTasks());
       break;
     default:
-
   }
 }
 
 function completedTasks() {
   var cardArray = getFromStorage();
   var completeTasksArray = cardArray.filter(function(card) {
-    return card.complete
+    return card.complete;
   })
   return completeTasksArray;
 }
@@ -225,7 +224,7 @@ function completedTasks() {
 function pendingTasks() {
   var cardArray = getFromStorage();
   var pendingArray = cardArray.filter(function(card) {
-    return !card.complete
+    return !card.complete;
   })
   return pendingArray;
 }
@@ -261,4 +260,14 @@ function updateCardObject(id, property, newValue) {
     return card;
   });
   localStorage.setItem('cardlist', JSON.stringify(newCardArray));
+}
+
+function updateCharacterCount() {
+  var className = $(this).prop('class');
+  if (className === 'title-input') {
+    $('.title-counter').text($(this).val().length);
+  }
+  if (className === 'body-input') {
+    $('.body-counter').text($(this).val().length);
+  }
 }
