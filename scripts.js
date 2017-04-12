@@ -14,6 +14,7 @@ function addCard() {
   stringifyArray(cardArray);
   clearInputs();
   disableSave();
+  clearCardContainer();
   prependCards(cardArray);
 }
 
@@ -40,12 +41,20 @@ function sendToStorage(array) {
   getFromStorage();
 }
 
-function prependCards(array) {
+function clearCardContainer() {
   var cardContainer = $('.card-container');
   cardContainer.html('');
+}
+
+function prependCards(array) {
+  var cardContainer = $('.card-container');
+  var completeClass
   array.forEach(function(card){
+    if (card.complete) {
+      completeClass = 'completed';
+    }
   cardContainer.prepend(
-    `<article class="card" id=${card.uniqueID}>
+    `<article class="card ${completeClass}" id=${card.uniqueID}>
       <div class="card-header">
         <h3 class="card-title" contenteditable="true">${card.title}</h3>
         <button class="delete-btn card-btns"></button>
@@ -140,6 +149,8 @@ $('.card-container').on('click', '.down-vote', changeImportance);
 
 $('.card-container').on('click', '.complete-btn', completeTask);
 
+$('main').on('click', '.show-complete-btn', prependAllTasks);
+
 function completeTask() {
   var cardArray = getFromStorage();
   var cardID = parseInt($(this).closest('article').attr('id'));
@@ -150,6 +161,20 @@ function completeTask() {
     }
     localStorage.setItem('cardlist', JSON.stringify(cardArray));
   })
+}
+
+function prependAllTasks() {
+  console.log('test');
+  prependCards(completedTasks());
+  // prependCards(pendingTasks());
+}
+
+function completedTasks() {
+  var cardArray = getFromStorage();
+  var completeTasksArray = cardArray.filter(function(card) {
+    return card.complete
+  })
+  return completeTasksArray;
 }
 
 function pendingTasks() {
