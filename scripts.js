@@ -4,31 +4,32 @@ function getFromStorage() {
   return JSON.parse(localStorage.getItem('cardlist')) || [];
 }
 
-function addCard() {
-  var title = $('.title-input').val();
-  var body = $('.body-input').val();
-  var uniqueID = Date.now();
-  var card = new Card(title, body, uniqueID);
-  var cardArray = getFromStorage();
-  cardArray.push(card);
-  stringifyArray(cardArray);
-  clearInputs();
-  disableSave();
-  clearCardContainer();
-  prependCards(cardArray);
-}
-
-function clearInputs() {
-  $('.title-input').val('');
-  $('.body-input').val('');
-}
-
-function Card(title, body, uniqueID) {
+function Card(title, body, uniqueID) {  // <-- CONSTRUCTOR FUNCTION
   this.title = title;
   this.body = body;
   this.uniqueID = uniqueID;
   this.importance = 'Normal';
   this.complete = false;
+}
+
+function addCard() {
+  var cardArray = getFromStorage();
+  var title = $('.title-input').val();
+  var body = $('.body-input').val();
+  var uniqueID = Date.now();
+  var card = new Card(title, body, uniqueID);
+  cardArray.push(card);
+  stringifyArray(cardArray);
+  clearInputs();
+  disableSave();
+  clearCardContainer();
+  $('.show-complete-btn').text('Show Completed');
+  prependCards(pendingTasks());
+}
+
+function clearInputs() {
+  $('.title-input').val('');
+  $('.body-input').val('');
 }
 
 function stringifyArray(array) {
@@ -48,10 +49,9 @@ function clearCardContainer() {
 
 function prependCards(array) {
   var cardContainer = $('.card-container');
-  var completeClass
   array.forEach(function(card){
-    if (card.complete) {
-      completeClass = 'completed';
+    if (card.complete === true) {
+      var completeClass = 'completed';
     }
   cardContainer.prepend(
     `<article class="card ${completeClass}" id=${card.uniqueID}>
@@ -149,7 +149,7 @@ $('.card-container').on('click', '.down-vote', changeImportance);
 
 $('.card-container').on('click', '.complete-btn', completeTask);
 
-$('main').on('click', '.show-complete-btn', prependAllTasks);
+$('main').on('click', '.show-complete-btn', toggleCompleted);
 
 function completeTask() {
   var cardArray = getFromStorage();
@@ -163,10 +163,24 @@ function completeTask() {
   })
 }
 
-function prependAllTasks() {
-  console.log('test');
-  prependCards(completedTasks());
-  // prependCards(pendingTasks());
+function toggleCompleted() {
+  var cardArray = getFromStorage();
+// console.log($('.card-container').children().length);
+  switch (cardArray.length > $('.card-container').children().length) {
+    case true:
+      $('.show-complete-btn').text('Hide Completed');
+      clearCardContainer();
+      prependCards(pendingTasks());
+      prependCards(completedTasks());
+      break;
+    case false:
+    $('.show-complete-btn').text('Show Completed');
+      clearCardContainer();
+      prependCards(pendingTasks());
+      break;
+    default:
+
+  }
 }
 
 function completedTasks() {
