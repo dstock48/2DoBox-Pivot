@@ -58,6 +58,7 @@ function prependCards(array) {
       <div class="card-header">
         <h3 class="card-title" contenteditable="true">${card.title}</h3>
         <button class="delete-btn card-btns"></button>
+        <button class="complete-btn card-btns"></button>
       </div>
       <p class="card-body" contenteditable="true">${card.body}</p>
       <div class="card-footer">
