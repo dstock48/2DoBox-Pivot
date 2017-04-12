@@ -27,9 +27,7 @@ function Card(title, body, uniqueID) {
   this.title = title;
   this.body = body;
   this.uniqueID = uniqueID;
-  this.qualityArray = ['swill', 'plausible', 'genius'];
-  this.quality = this.qualityArray[0]; // TODO: change index 0 to qualityCount
-  this.qualityCount = 0;
+  this.importance = 'Normal';
 }
 
 function stringifyArray(array) {
@@ -43,12 +41,11 @@ function sendToStorage(array) {
 }
 
 function getFromStorage() {
-  var storageList = localStorage.getItem('cardlist');
-  var parsedCardList = JSON.parse(storageList);
+  var storageList = JSON.parse(localStorage.getItem('cardlist'));
   var cardArray = createCardArray();
   if (localStorage.length > 0) {
-    cardArray = parsedCardList;
-    prependCards(parsedCardList);
+    cardArray = storageList;
+    prependCards(storageList);
   }
 }
 
@@ -66,7 +63,7 @@ function prependCards(array) {
       <div class="card-footer">
         <button class="up-vote card-btns"></button>
         <button class="down-vote card-btns"></button>
-        <h5>quality: <span class="quality">${card.quality}</h5></span>
+        <h5>Importance: <span class="importance">${card.importance}</h5></span>
       </div>
     </article>`
   )}
@@ -155,20 +152,50 @@ $('input, textarea').on('keydown', enterSubmit)
 
 $('.card-container').on('focusout', '.card', editCardText);
 
-// Upvote WIP
+$('.card-container').on('click', '.up-vote', changeImportance);
 
-// $('.card-container').on('click', '.up-vote', function() {
-//   console.log('this', this);
-//   var qualityText = $(this).siblings('h5').children('.quality').text();
-//   console.log('qualitytext',qualityText);
-//   var id = $(this).closest('.idea-card').attr('id');
-//   var card = $(this).closest('.idea-card');  // Review with James
-//   console.log('card', card); // Review with James
-//   var quality = ['swill', 'plausible', 'genius']
-//   for(var i = 0; i < quality.length; i++) {
-//     if (qualityArray[i] == qualityText) {
-//       qualityText = quality[i += 1];
-//       $(this).siblings('h5').children('.quality').text(qualityText);
-//     }
-//   }
-// })
+$('.card-container').on('click', '.down-vote', changeImportance);
+
+
+
+
+// function Card(title, body, uniqueID) {
+//   this.title = title;
+//   this.body = body;
+//   this.uniqueID = uniqueID;
+//   this.importance = 'Normal';
+// }
+
+
+function changeImportance() {
+  var $button = $(this).prop('class');
+  var $cardID = $(this).closest('.card').attr('id');
+  var importanceArray = ['None', 'Low', 'Normal', 'High', 'Critical'];
+  var $currentImportance = $(this).parent().find('.importance').text();
+  switch ($button) {
+    case 'up-vote card-btns':
+      var newImportance = importanceArray[importanceArray.indexOf($currentImportance) + 1] || $currentImportance;
+      break;
+    case 'down-vote card-btns':
+      var newImportance = importanceArray[importanceArray.indexOf($currentImportance) - 1] || $currentImportance;
+      break;
+    default:
+  }
+  updateCardDisplay($(this).parent().find('.importance'), newImportance);
+  updateCardObject($cardID, 'importance', newImportance);
+}
+
+function updateCardDisplay(element, newValue) {
+  element.text(newValue);
+}
+
+function updateCardObject(id, property, newValue) {
+  var oldCardArray = JSON.parse(localStorage.getItem('cardlist'));
+  var newCardArray = oldCardArray.map(function(card) {
+    if (card.uniqueID == id) {
+      card[property] = newValue;
+    }
+    return card;
+  });
+  localStorage.setItem('cardlist', JSON.stringify(newCardArray));
+}
