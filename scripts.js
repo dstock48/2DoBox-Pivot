@@ -168,17 +168,20 @@ function completeTask() {
   var cardArray = getFromStorage();
   var cardID = parseInt($(this).closest('article').attr('id'));
   $(this).closest('.card').toggleClass('completed');
+
+
   cardArray.forEach(function(card, index) {
     if (cardID == card.uniqueID) {
-      card.complete = true;
+      card.complete = !card.complete;
     }
     localStorage.setItem('cardlist', JSON.stringify(cardArray));
   })
+
+
 }
 
 function toggleCompleted() {
   var cardArray = getFromStorage();
-// console.log($('.card-container').children().length);
   switch (cardArray.length > $('.card-container').children().length) {
     case true:
       $('.show-complete-btn').text('Hide Completed');
