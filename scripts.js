@@ -1,6 +1,6 @@
-getFromStorage();
+prependCards(pendingTasks());
 
-function createCardArray() {
+function getFromStorage() {
   return JSON.parse(localStorage.getItem('cardlist')) || [];
 }
 
@@ -9,13 +9,12 @@ function addCard() {
   var body = $('.body-input').val();
   var uniqueID = Date.now();
   var card = new Card(title, body, uniqueID);
-  var cardArray = createCardArray();
+  var cardArray = getFromStorage();
   cardArray.push(card);
   stringifyArray(cardArray);
   clearInputs();
   disableSave();
-  // $('.submit-btn').attr('disabled', true);
-  // console.log($('.submit-btn').attr('disabled'));
+  prependCards(cardArray);
 }
 
 function clearInputs() {
@@ -28,6 +27,7 @@ function Card(title, body, uniqueID) {
   this.body = body;
   this.uniqueID = uniqueID;
   this.importance = 'Normal';
+  this.complete = false;
 }
 
 function stringifyArray(array) {
@@ -38,15 +38,6 @@ function stringifyArray(array) {
 function sendToStorage(array) {
   var tempStore = localStorage.setItem('cardlist', array);
   getFromStorage();
-}
-
-function getFromStorage() {
-  var storageList = JSON.parse(localStorage.getItem('cardlist'));
-  var cardArray = createCardArray();
-  if (localStorage.length > 0) {
-    cardArray = storageList;
-    prependCards(storageList);
-  }
 }
 
 function prependCards(array) {
@@ -71,7 +62,7 @@ function prependCards(array) {
 )}
 
 function deleteCard() {
-  var cardArray = createCardArray();
+  var cardArray = getFromStorage();
   var cardID = parseInt($(this).closest('article').attr('id'));
   $(this).closest('article').remove();
   cardArray.forEach(function(card, index) {
@@ -99,7 +90,6 @@ function enterSubmit(event) {
   var userTitle = $('.title-input').val();
   var userBody = $('.body-input').val();
   if (event.keyCode === 13 && userTitle !== '' && userBody !== '') {
-    // event.preventDefault();
     addCard();
   } else if (event.keyCode === 13) {
     return false;
@@ -123,7 +113,7 @@ function editCardText(event) {
   var cardId = parseInt(cardIdString);
   var storageList = localStorage.getItem('cardlist');
   var parsedCardList = JSON.parse(storageList);
-  var cardArray = createCardArray();
+  var cardArray = getFromStorage();
   cardArray.forEach(function(card) {
     if (cardId == card.uniqueID && event.target.className == 'card-body') {
       card.body = cardBody;
@@ -148,6 +138,27 @@ $('.card-container').on('click', '.up-vote', changeImportance);
 
 $('.card-container').on('click', '.down-vote', changeImportance);
 
+$('.card-container').on('click', '.complete-btn', completeTask);
+
+function completeTask() {
+  var cardArray = getFromStorage();
+  var cardID = parseInt($(this).closest('article').attr('id'));
+  $(this).closest('.card').toggleClass('completed');
+  cardArray.forEach(function(card, index) {
+    if (cardID == card.uniqueID) {
+      card.complete = true;
+    }
+    localStorage.setItem('cardlist', JSON.stringify(cardArray));
+  })
+}
+
+function pendingTasks() {
+  var cardArray = getFromStorage();
+  var pendingArray = cardArray.filter(function(card) {
+    return !card.complete
+  })
+  return pendingArray;
+}
 
 function changeImportance() {
   var $button = $(this).prop('class');

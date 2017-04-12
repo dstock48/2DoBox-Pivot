@@ -5,6 +5,10 @@
   margin: 0;
 }
 
+.hidden {
+  display: none;
+}
+
 html {
   height: 100%;
 }
