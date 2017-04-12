@@ -86,9 +86,9 @@ function filterMatches() {
   $('.card').each(function() {
     var cardText = $(this).text().toLowerCase();
     if (cardText.indexOf(searchInput) != -1) {
-      $(this).parent().show();
+      $(this).show();
     } else {
-      $(this).parent().hide();
+      $(this).hide();
     }
   })
 }
@@ -106,22 +106,13 @@ function enterSubmit(event) {
 }
 
 function disableSave() {
-  // console.log('checking input');
   var userTitle = $('.title-input').val();
   var userBody = $('.body-input').val();
-  // console.log($('.submit-btn').prop('disabled'));
-
   if (userTitle !== '' && userBody !== '') {
     $('.submit-btn').prop('disabled', false)
   } else {
     $('.submit-btn').prop('disabled', true)
   }
-
-  // if (userTitle.val() === ('') && userBody.val() === ('')) {
-  //   $('.submit-btn').prop('disabled', true)
-  // } else {
-  //   $('.submit-btn').prop('disabled', false)
-  // }
 }
 
 function editCardText(event) {
@@ -155,16 +146,6 @@ $('.card-container').on('focusout', '.card', editCardText);
 $('.card-container').on('click', '.up-vote', changeImportance);
 
 $('.card-container').on('click', '.down-vote', changeImportance);
-
-
-
-
-// function Card(title, body, uniqueID) {
-//   this.title = title;
-//   this.body = body;
-//   this.uniqueID = uniqueID;
-//   this.importance = 'Normal';
-// }
 
 
 function changeImportance() {
