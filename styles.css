@@ -208,6 +208,15 @@ span {
   color: #fff;
 }
 
+.show-all-btn {
+  display: block;
+  margin: auto;
+  width: 200px;
+}
+.show-all-btn:hover {
+  background-color: #045E55;
+}
+
 .card-btns {
   display: inline-block;
   width: 25px;

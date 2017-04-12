@@ -25,6 +25,7 @@ function addCard() {
   clearCardContainer();
   $('.show-complete-btn').text('Show Completed');
   prependCards(pendingTasks());
+  $('.title-input').focus();
 }
 
 function clearInputs() {
@@ -68,7 +69,9 @@ function prependCards(array) {
       </div>
     </article>`
   )}
-)}
+)
+$('article:visible').slice(10).hide();
+}
 
 function deleteCard() {
   var cardArray = getFromStorage();
@@ -80,6 +83,8 @@ function deleteCard() {
     }
     localStorage.setItem('cardlist', JSON.stringify(cardArray));
   })
+  // clearCardContainer();
+  // prependCards(pendingTasks());
 }
 
 function filterMatches() {
@@ -150,6 +155,14 @@ $('.card-container').on('click', '.down-vote', changeImportance);
 $('.card-container').on('click', '.complete-btn', completeTask);
 
 $('main').on('click', '.show-complete-btn', toggleCompleted);
+
+$('main').on('click', '.show-all-btn', showAllTasks);
+
+function showAllTasks() {
+  $('.show-all-btn').hide();
+  $('article').show();
+}
+
 
 function completeTask() {
   var cardArray = getFromStorage();
