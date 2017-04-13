@@ -57,6 +57,7 @@ function addCard() {
   cardArray.push(card);
   stringifyArray(cardArray);
   clearInputs();
+  resetCharacterCount();
   disableSave();
   clearCardContainer();
   $('.show-complete-btn').text('Show Completed');
@@ -187,6 +188,7 @@ function filterImportance() {
 }
 
 function filterAll() {
+  clearCardContainer();
   prependCards(pendingTasks());
 }
 
@@ -270,4 +272,9 @@ function updateCharacterCount() {
   if (className === 'body-input') {
     $('.body-counter').text($(this).val().length);
   }
+}
+
+function resetCharacterCount() {
+  $('.title-counter').text('0');
+  $('.body-counter').text('0');
 }
