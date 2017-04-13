@@ -233,21 +233,21 @@ function pendingTasks() {
 }
 
 function changeImportance() {
-  var $button = $(this).prop('class');
-  var $cardID = $(this).closest('.card').attr('id');
+  var button = $(this).prop('class');
+  var cardID = $(this).closest('.card').attr('id');
   var importanceArray = ['None', 'Low', 'Normal', 'High', 'Critical'];
-  var $currentImportance = $(this).parent().find('.importance').text();
-  switch ($button) {
+  var currentImportance = $(this).parent().find('.importance').text();
+  switch (button) {
     case 'up-vote card-btns':
-      var newImportance = importanceArray[importanceArray.indexOf($currentImportance) + 1] || $currentImportance;
+      var newImportance = importanceArray[importanceArray.indexOf(currentImportance) + 1] || currentImportance;
       break;
     case 'down-vote card-btns':
-      var newImportance = importanceArray[importanceArray.indexOf($currentImportance) - 1] || $currentImportance;
+      var newImportance = importanceArray[importanceArray.indexOf(currentImportance) - 1] || currentImportance;
       break;
     default:
   }
   updateCardDisplay($(this).parent().find('.importance'), newImportance);
-  updateCardObject($cardID, 'importance', newImportance);
+  updateCardObject(cardID, 'importance', newImportance);
 }
 
 function updateCardDisplay(element, newValue) {
