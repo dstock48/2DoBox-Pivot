@@ -54,7 +54,7 @@ textarea {
   width: 100%;
   max-width: 700px;
   margin: 20px auto;
-  padding: 5px;
+  padding: 5px 35px 5px 5px;
   resize: none;
   transition: all 200ms;
   font-size: 20px;
@@ -77,7 +77,6 @@ textarea::placeholder {
 .body-counter {
   position: absolute;
   color: #00a79d;
-  background-color: #fff;
   text-align: right;
   padding: 0 10px;
   right: 3px;

@@ -188,6 +188,7 @@ function filterImportance() {
 }
 
 function filterAll() {
+  $('.show-complete-btn').text('Show Completed');
   clearCardContainer();
   prependCards(pendingTasks());
 }
