@@ -24,7 +24,7 @@ $('.button-container').on('click', '.none, .low, .normal, .high, .critical', fil
 
 $('.button-container').on('click', '.all', filterAll);
 
-$('.input-container').on('input', '.title-input, .body-input', updateCharacterCount)
+$('.input-container').on('input', '.title-input, .body-input', updateCharacterCount);
 
 function Card(title, body, uniqueID) {
   this.title = title;
@@ -39,7 +39,7 @@ function getFromStorage() {
 }
 
 function stringifyArray(array) {
-  cardArrayStringify = JSON.stringify(array);
+  var cardArrayStringify = JSON.stringify(array);
   sendToStorage(cardArrayStringify);
 }
 
@@ -116,8 +116,8 @@ function prependCards(array) {
         <h5>Importance: <span class="importance">${card.importance}</h5></span>
       </div>
     </article>`
-  )}
-  )
+  );}
+);
   $('article:visible').slice(10).hide();
 }
 
@@ -125,12 +125,12 @@ function completeTask() {
   var cardArray = getFromStorage();
   var cardID = parseInt($(this).closest('article').attr('id'));
   $(this).closest('.card').toggleClass('completed');
-  cardArray.forEach(function(card, index) {
+  cardArray.forEach(function(card) {
     if (cardID == card.uniqueID) {
       card.complete = !card.complete;
     }
     localStorage.setItem('cardlist', JSON.stringify(cardArray));
-  })
+  });
 }
 
 function deleteCard() {
@@ -142,7 +142,7 @@ function deleteCard() {
       cardArray.splice(index, 1);
     }
     localStorage.setItem('cardlist', JSON.stringify(cardArray));
-  })
+  });
 }
 
 function editCardText(event) {
@@ -150,8 +150,6 @@ function editCardText(event) {
   var cardBody = $(this).find('p').text();
   var cardIdString = $(this).attr('id');
   var cardId = parseInt(cardIdString);
-  var storageList = localStorage.getItem('cardlist');
-  var parsedCardList = JSON.parse(storageList);
   var cardArray = getFromStorage();
   cardArray.forEach(function(card) {
     if (cardId == card.uniqueID && event.target.className == 'card-body') {
@@ -160,7 +158,7 @@ function editCardText(event) {
       card.title = cardTitle;
     }
     localStorage.setItem('cardlist', JSON.stringify(cardArray));
-  })
+  });
 }
 
 function filterMatches() {
@@ -172,7 +170,7 @@ function filterMatches() {
     } else {
       $(this).hide();
     }
-  })
+  });
 }
 
 function filterImportance() {
@@ -184,7 +182,7 @@ function filterImportance() {
     } else {
       $(this).hide();
     }
-  })
+  });
 }
 
 function filterAll() {
@@ -220,7 +218,7 @@ function completedTasks() {
   var cardArray = getFromStorage();
   var completeTasksArray = cardArray.filter(function(card) {
     return card.complete;
-  })
+  });
   return completeTasksArray;
 }
 
@@ -228,7 +226,7 @@ function pendingTasks() {
   var cardArray = getFromStorage();
   var pendingArray = cardArray.filter(function(card) {
     return !card.complete;
-  })
+  });
   return pendingArray;
 }
 
@@ -237,12 +235,13 @@ function changeImportance() {
   var cardID = $(this).closest('.card').attr('id');
   var importanceArray = ['None', 'Low', 'Normal', 'High', 'Critical'];
   var currentImportance = $(this).parent().find('.importance').text();
+  var newImportance;
   switch (button) {
     case 'up-vote card-btns':
-      var newImportance = importanceArray[importanceArray.indexOf(currentImportance) + 1] || currentImportance;
+      newImportance = importanceArray[importanceArray.indexOf(currentImportance) + 1] || currentImportance;
       break;
     case 'down-vote card-btns':
-      var newImportance = importanceArray[importanceArray.indexOf(currentImportance) - 1] || currentImportance;
+      newImportance = importanceArray[importanceArray.indexOf(currentImportance) - 1] || currentImportance;
       break;
     default:
   }
